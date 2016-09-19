@@ -1,0 +1,5 @@
+<!-- Based on Techniques/Water.xml -->
+<technique vs="DeepWater" ps="DeepWater">
+    <pass name="refract" />
+    <pass name="litalpha" depthwrite="false" blend="addalpha" />
+</technique>
