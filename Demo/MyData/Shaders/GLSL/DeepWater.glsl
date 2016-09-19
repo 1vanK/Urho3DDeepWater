@@ -45,6 +45,7 @@ uniform float cDepthScale;
 
     varying vec4 vTangent;
     varying vec4 vTexCoord;
+    varying vec4 vTexCoord2;
 #endif
 
 void VS()
@@ -69,6 +70,7 @@ void VS()
         vec3 tangent = GetWorldTangent(modelMatrix);
         vec3 bitangent = cross(tangent, vNormal) * iTangent.w;
         vTexCoord = vec4(GetTexCoord(iTexCoord * cNoiseTiling + cElapsedTime * cNoiseSpeed), bitangent.xy);
+        vTexCoord2 = vec4(GetTexCoord(iTexCoord.yx * cNoiseTiling - cElapsedTime * cNoiseSpeed), bitangent.xy);
         vTangent = vec4(tangent, bitangent.z);
 
         #ifdef SPOTLIGHT
@@ -103,6 +105,8 @@ void PS()
 
         mat3 tbn = mat3(vTangent.xyz, vec3(vTexCoord.zw, vTangent.w), vNormal);
         vec3 normal = normalize(tbn * DecodeNormal(texture2D(sNormalMap, vTexCoord.xy)));
+        vec3 normal2 = normalize(tbn * DecodeNormal(texture2D(sNormalMap, vTexCoord2.xy)));
+        normal = normalize(normal + normal2);
 
         #ifdef HEIGHTFOG
             float fogFactor = GetHeightFogFactor(vWorldPos.w, vWorldPos.y);
