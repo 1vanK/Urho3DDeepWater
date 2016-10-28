@@ -10,5 +10,5 @@
     <parameter name="FresnelPower" value="8" />
     <parameter name="ShallowColor" value="1.0 1.0 1.0" />
     <parameter name="DeepColor" value="0.0 0.13 0.1" />
-    <parameter name="DepthScale" value="10.0" />
+    <parameter name="DepthScale" value="0.02" />
 </material>

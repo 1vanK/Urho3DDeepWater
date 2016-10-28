@@ -136,7 +136,7 @@ void PS()
     
         vec4 depthInput = texture2D(sDepthBuffer, refractUV);
         float depth = ReconstructDepth(depthInput.r); // HWDEPTH
-        float waterDepth = depth - vWorldPos.w;
+        float waterDepth = (depth - vWorldPos.w) * (cFarClipPS - cNearClipPS);
         
         // Object above water. Recalc without UV noise (avoid artefacts).
         if (waterDepth <= 0.0)
@@ -146,7 +146,7 @@ void PS()
             
             depthInput = texture2D(sDepthBuffer, vScreenPos.xy / vScreenPos.w);
             depth = ReconstructDepth(depthInput.r);
-            waterDepth = depth - vWorldPos.w;
+            waterDepth = (depth - vWorldPos.w) * (cFarClipPS - cNearClipPS);
         }
 
         vec3 waterColor = mix(cShallowColor, cDeepColor, clamp(waterDepth * cDepthScale, 0.0, 1.0));
